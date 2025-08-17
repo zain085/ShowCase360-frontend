@@ -31,7 +31,7 @@ import Feedback from './pages/attendee/Feedback';
 import FloorPlan from './pages/attendee/FloorPlan';
 import Home from './pages/attendee/Home';
 import Sessions from './pages/attendee/Sessions';
-import ForgotPassword from './pages/Auth/ForgotPassword';
+import ForgotPassword from './pages/auth/ForgotPassword';
 import Login from './pages/auth/Login';
 import Profile from './pages/auth/Profile';
 import Register from './pages/auth/Register';
