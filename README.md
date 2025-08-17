@@ -1,123 +1,103 @@
-import pypandoc
+# Showcase360 - Frontend
 
-# The project documentation content provided by the user
-text = """
-EventSphere - Expo & Event Management System
-============================================
+🎉 Frontend for Showcase360 Expo & Event Management System
 
-📁 Project Setup (Local)
-------------------------
+This repository contains the **React frontend** for Showcase360.\
+It provides user interfaces for **Admins/Organizers, Exhibitors, and
+Attendees** with role-based access.
 
-1. Clone the repo
+------------------------------------------------------------------------
 
-2. Install dependencies:
-   npm install
+## 📁 Project Setup (Local)
 
-3. Start backend:
-   npm run dev
+1.  Clone the repo:
 
-4. Start frontend:
-   npm run dev
+    ``` bash
+    git clone <git clone https://github.com/zain085/showcase360-frontend.git>
+    cd showcase360-frontend
+    ```
 
+2.  Install dependencies:
 
-🛠️ MongoDB Connection String
------------------------------
-MONGO_URI = mongodb+srv://zainahmedkhan085:5gFKSNFjs2qKps9V@cluster0.x6odzyz.mongodb.net/Event_Sphere?retryWrites=true&w=majority&appName=Cluster0
+    ``` bash
+    npm install
+    ```
 
+3.  Start the development server:
 
-🔐 Admin Credentials
----------------------
-Username: zain766@gmail.com  
-Password: zain$123
+    ``` bash
+    npm run dev
+    ```
 
+------------------------------------------------------------------------
 
-👤 Default Roles
-------------------
-Admin / Organizer  
-Exhibitor  
-Attendee
+## 📦 Frontend Dependencies
 
+-   React\
+-   React Router DOM\
+-   Axios\
+-   Bootstrap\
+-   React Icons\
+-   React Toastify
 
-📌 Project Structure
----------------------
-- Backend: `/backend`
-- Frontend: `/frontend`
-- API Instance: `/frontend/src/api/axiosinstance.js`
+------------------------------------------------------------------------
 
+## 📂 Project Structure
 
-📦 Project Dependencies
-------------------------
-Frontend:
-- React
-- React Router DOM
-- Axios
-- Bootstrap
-- React Icons
-- React Toastify
+    showcase360-frontend/
+    │── public/                 # Public assets
+    │── src/
+    │   ├── api/
+    │   │   └── axiosinstance.js   # Centralized Axios API instance
+    │   ├── components/            # Reusable UI components
+    │   ├── pages/                 # Page-level components
+    │   ├── context/               # Context API (auth, roles, etc.)
+    │   ├── App.js
+    │   └── index.js
+    │── package.json
+    │── README.md
 
-Backend:
-- Express
-- Mongoose
-- dotenv
-- cors
-- bcryptjs
-- jsonwebtoken
-- body-parser
-- nodemon
+------------------------------------------------------------------------
 
+## 🎨 Theme & UI
 
-✅ Notes
----------
-- Role-based access system is implemented with three user types:
-  • Admin / Organizer
-  • Exhibitor
-  • Attendee
+-   **Dark theme with custom variables:**
+    -   `--bs-bg-dark` = `#121212` → page background\
+    -   `--bs-bg-secondary` = `#1e1e1e` → card/section background\
+    -   Purple accent (`.btn-purple`, `.border-purple`, `.table-purple`)
+        across UI
+-   **Management Panels** use:
+    -   Dark Bootstrap tables\
+    -   Action icons for edit/delete (not dropdowns)
 
-- User Authentication:
-  • Secure login and registration for all roles.
-  • Role is identified during register (exhibitor, attendee).
-  • Passwords are encrypted before storing in the database.
-  • Forgot Password and Reset Password functionalities are implemented.
+------------------------------------------------------------------------
 
-- Admin/Organizer Capabilities:
-  • Manage expos: create, edit, delete with full control over title, date, location, description, and theme.
-  • Assign and unassign booths to exhibitors by editing the `exhibitorId` field via update icon.
-  • Manage exhibitors: view, update, and reject exhibitors using approval icons.
-  • Manage sessions: add, update, and delete sessions with speaker, topic, time, and location.
-  • View analytics including booth traffic, session popularity, and overall expo performance.
-  • View attendee messages and feedback (read-only access).
+## 🔑 Key Features
 
-- Exhibitor Capabilities:
-  • Create and update a full profile including company name, contact info, logo, services, and document details.
-  • View and manage their assigned booth information.
-  • Explore session schedules and register for expos.
+-   **Role-based access**: Admin/Organizer, Exhibitor, Attendee\
+-   **User-friendly UI** with consistent dark theme\
+-   **Axios instance** for handling all API requests\
+-   **Notifications** with React Toastify\
+-   **Session bookmarking** stored in `localStorage`
 
-- Attendee Capabilities:
-  • View expo info, sessions, exhibitors, and floor plans.
-  • Register for sessions.
-  • Bookmark sessions using persistent localStorage.
-  • Submit feedback and messages directly to admin.
-  • Access a clean, dark-themed homepage with event details, testimonials, and partner sections.
+------------------------------------------------------------------------
 
-- UI & Theme:
-  • Consistent dark mode with CSS variables:
-    - `.bg-dark` = #121212 for main background
-    - `.bg-dark-custom` = #1e1e1e for cards and sections
-    - `.border-purple`, `.btn-purple`, `.table-purple` used across the UI
-  • Management panels use **dark Bootstrap tables** with **icons** for edit and delete actions (not dropdowns).
+## ✅ API Response Format
 
-- General Features:
-  • Centralized Axios instance at `src/api/axiosinstance.js` handles all requests.
-  • API responses follow a consistent format:
-    {
-      "message": "Your message",
-      "success": true,
-      "key": [...]
-    }
-"""
+All requests expect responses in a consistent format:
 
-# Save as README.md using pypandoc
-output_file = "/mnt/data/README.md"
-pypandoc.convert_text(text, 'md', format='md', outputfile=output_file, extra_args=['--standalone'])
+``` json
+{
+  "message": "Your message",
+  "success": true,
+  "key": [...]
+}
+```
 
-output_file
+------------------------------------------------------------------------
+
+## 🌐 Backend Connection
+
+The backend for this project is available in a **separate repository**
+(`showcase360-backend`).\
+Please ensure it is running to use the frontend.
