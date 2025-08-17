@@ -64,4 +64,26 @@ export const SelectField = ({ label, name, value, onChange, options = [], requir
   </div>
 );
 
+// === Reusable Radio Button Group ===
+export const RadioButtonGroup = ({ label, name, value, onChange, options = [], required = true }) => (
+  <div className="mb-3">
+    <label className="form-label d-block">{label}</label>
+    {options.map((opt) => (
+      <div className="form-check form-check-inline" key={opt.value}>
+        <input
+          className="form-check-input"
+          type="radio"
+          name={name}
+          value={opt.value}
+          checked={value === opt.value}
+          onChange={onChange}
+          required={required}
+        />
+        <label className="form-check-label text-white">{opt.label}</label>
+      </div>
+    ))}
+  </div>
+);
+
+
 export default FormLayout;

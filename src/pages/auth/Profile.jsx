@@ -9,35 +9,35 @@ import axiosInstance from '../../api/axiosInstance';
 import {
   FormLayout,
   InputField,
-  SelectField,
+  RadioButtonGroup,
 } from '../../components/Form';
 
 const Profile = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    address: '',
-    gender: '',
-    profileImg: '',
-    role: '',
+    username: "",
+    email: "",
+    address: "",
+    gender: "",
+    profileImg: "",
+    role: "",
   });
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { data } = await axiosInstance.get('/auth/profile');
+        const { data } = await axiosInstance.get("/auth/profile");
         const user = data.user;
         setFormData({
-          username: user.username || '',
-          email: user.email || '',
-          address: user.address || '',
-          gender: user.gender || '',
-          profileImg: user.profileImg || '',
-          role: user.role || '',
+          username: user.username || "",
+          email: user.email || "",
+          address: user.address || "",
+          gender: user.gender || "",
+          profileImg: user.profileImg || "",
+          role: user.role || "",
         });
       } catch (err) {
         console.error(err);
-        toast.error('Failed to load profile');
+        toast.error("Failed to load profile");
       }
     };
 
@@ -55,11 +55,14 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axiosInstance.put('/auth/update-profile', formData);
-      toast.success(data.message || 'Profile updated successfully');
+      const { data } = await axiosInstance.put(
+        "/auth/update-profile",
+        formData
+      );
+      toast.success(data.message || "Profile updated successfully");
     } catch (err) {
       console.error(err);
-      toast.error('Failed to update profile');
+      toast.error("Failed to update profile");
     }
   };
 
@@ -90,14 +93,14 @@ const Profile = () => {
         onChange={handleChange}
       />
 
-      <SelectField
-        label="Gender"
+      <RadioButtonGroup
+        label="Select Gender"
         name="gender"
         value={formData.gender}
         onChange={handleChange}
         options={[
-          { label: 'Male', value: 'male' },
-          { label: 'Female', value: 'female' },
+          { label: "Male", value: "male" },
+          { label: "Female", value: "female" }
         ]}
       />
 
@@ -113,7 +116,7 @@ const Profile = () => {
           src={formData.profileImg}
           alt="profile preview"
           className="my-2 rounded"
-          style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+          style={{ width: "100px", height: "100px", objectFit: "cover" }}
         />
       )}
 

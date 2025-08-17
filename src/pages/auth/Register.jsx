@@ -13,48 +13,55 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import axiosInstance from '../../api/axiosInstance';
+import {
+  InputField,
+  RadioButtonGroup,
+  SelectField,
+} from '../../components/Form';
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [address, setAddress] = useState('');
-  const [gender, setGender] = useState('');
-  const [role, setRole] = useState('');
-  const [profileImg, setProfileImg] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    address: '',
+    gender: '',
+    role: '',
+    profileImg: '',
+  });
   const [previewImg, setPreviewImg] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleImageChange = (e) => {
-    const url = e.target.value;
-    setProfileImg(url);
-    setPreviewImg(url);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'profileImg') setPreviewImg(value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match');
       return;
     }
 
     try {
-      const formData = {
+      const { name, email, password, address, gender, role, profileImg } = formData;
+
+      const res = await axiosInstance.post('/auth/register', {
         username: name,
         email,
         password,
         address,
         gender,
         role,
-        profileImg, // Now using URL
-      };
-
-      const res = await axiosInstance.post('/auth/register', formData);
+        profileImg,
+      });
 
       if (res.data.success) {
         toast.success('Registration successful');
@@ -71,41 +78,37 @@ const Register = () => {
   return (
     <div className="container-fluid bg-dark" style={{ minHeight: '100vh' }}>
       <div className="row justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <div className="col-md-6 col-lg-4">
+        <div className="col-md-6 col-lg-5">
           <div className="card shadow-lg border-purple">
             <div className="card-header bg-purple text-white">
               <h3 className="text-center mb-0">Register</h3>
             </div>
             <div className="card-body bg-dark-custom text-light">
               <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="form-label">Full Name</label>
-                  <input
-                    type="text"
-                    className="form-control bg-secondary text-light"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Email</label>
-                  <input
-                    type="email"
-                    className="form-control bg-secondary text-light"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
+                <InputField
+                  label="Full Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                <InputField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+
+                {/* Password Field */}
                 <div className="mb-3">
                   <label className="form-label">Password</label>
                   <div className="input-group">
                     <input
                       type={showPassword ? 'text' : 'password'}
-                      className="form-control bg-secondary text-light"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      name="password"
+                      className="form-control bg-dark text-white border-purple"
+                      value={formData.password}
+                      onChange={handleChange}
                       required
                     />
                     <button
@@ -118,14 +121,16 @@ const Register = () => {
                     </button>
                   </div>
                 </div>
+
                 <div className="mb-3">
                   <label className="form-label">Confirm Password</label>
                   <div className="input-group">
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
-                      className="form-control bg-secondary text-light"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      name="confirmPassword"
+                      className="form-control bg-dark text-white border-purple"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
                       required
                     />
                     <button
@@ -138,39 +143,34 @@ const Register = () => {
                     </button>
                   </div>
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">Address</label>
-                  <input
-                    type="text"
-                    className="form-control bg-secondary text-light"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Gender</label>
-                  <select
-                    className="form-select bg-secondary text-light"
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    required
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Profile Image URL</label>
-                  <input
-                    type="url"
-                    className="form-control bg-secondary text-light"
-                    value={profileImg}
-                    onChange={handleImageChange}
-                    placeholder="https://example.com/image.jpg"
-                  />
-                </div>
+
+                <InputField
+                  label="Address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                />
+
+                {/* Gender as Radio Button */}
+                <RadioButtonGroup
+                  label="Gender"
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  options={[
+                    { label: 'Male', value: 'male' },
+                    { label: 'Female', value: 'female' },
+                  ]}
+                />
+
+                <InputField
+                  label="Profile Image URL"
+                  name="profileImg"
+                  type="url"
+                  value={formData.profileImg}
+                  onChange={handleChange}
+                  placeholder="https://example.com/image.jpg"
+                />
                 {previewImg && (
                   <div className="mb-3 text-center">
                     <img
@@ -181,30 +181,30 @@ const Register = () => {
                     />
                   </div>
                 )}
-                <div className="mb-3">
-                  <label className="form-label">Role</label>
-                  <select
-                    className="form-select bg-secondary text-light"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    required
-                  >
-                    <option value="">Select Role</option>
-                    <option value="exhibitor">Exhibitor</option>
-                    <option value="attendee">Attendee</option>
-                  </select>
-                </div>
 
-                <div className="d-grid gap-2">
+                <SelectField
+                  label="Role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  options={[
+                    { label: 'Select role', value: '' },
+                    { label: 'Attendee', value: 'attendee' },
+                    { label: 'Exhibitor', value: 'exhibitor' },
+                  ]}
+                />
+
+                <div className="d-grid gap-2 mt-3">
                   <button type="submit" className="btn btn-purple">Register</button>
                 </div>
+
+                <div className="mt-3 text-center">
+                  <p>
+                    Already have an account?{' '}
+                    <Link to="/login" className="text-purple">Login</Link>
+                  </p>
+                </div>
               </form>
-              <div className="mt-3 text-center">
-                <p>
-                  Already have an account?{' '}
-                  <Link to="/login" className="text-purple">Login</Link>
-                </p>
-              </div>
             </div>
           </div>
         </div>
