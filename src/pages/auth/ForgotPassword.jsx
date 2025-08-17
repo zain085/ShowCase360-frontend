@@ -7,6 +7,7 @@ import {
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance';
+import { InputField } from '../../components/Form';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -40,17 +41,14 @@ const ForgotPassword = () => {
             </div>
             <div className="card-body bg-dark-custom text-light">
               <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email</label>
-                  <input
-                    type="email"
-                    className="form-control bg-secondary text-light"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
+                <InputField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+
                 <div className="d-grid gap-2">
                   <button type="submit" className="btn btn-purple">Reset Password</button>
                 </div>

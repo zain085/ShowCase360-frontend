@@ -13,19 +13,27 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import axiosInstance from '../../api/axiosInstance';
+import { InputField } from '../../components/Form';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axiosInstance.post('/auth/login', { email, password });
+      const res = await axiosInstance.post('/auth/login', formData);
 
       if (res.data.success) {
         const { token, user } = res.data;
@@ -70,26 +78,24 @@ const Login = () => {
             </div>
             <div className="card-body bg-dark-custom text-light">
               <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="form-label">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    className="form-control bg-secondary text-light"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
+                <InputField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+
+                {/* Password Field */}
                 <div className="mb-3">
                   <label className="form-label">Password</label>
                   <div className="input-group">
                     <input
                       type={showPassword ? "text" : "password"}
-                      className="form-control bg-secondary text-light"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      name="password"
+                      className="form-control bg-dark text-white border-purple"
+                      value={formData.password}
+                      onChange={handleChange}
                       required
                     />
                     <button

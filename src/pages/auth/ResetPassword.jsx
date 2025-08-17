@@ -19,22 +19,29 @@ const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();
 
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [formData, setFormData] = useState({
+    password: '',
+    confirmPassword: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match');
       return;
     }
 
     try {
       const res = await axiosInstance.post(`/auth/resetPassword/${token}`, {
-        password,
+        password: formData.password,
       });
 
       if (res.data.success) {
@@ -61,37 +68,47 @@ const ResetPassword = () => {
               <form onSubmit={handleSubmit}>
                 {/* New Password */}
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">New Password</label>
+                  <label className="form-label">New Password</label>
                   <div className="input-group">
                     <input
                       type={showPassword ? 'text' : 'password'}
-                      className="form-control bg-secondary text-light"
-                      id="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      name="password"
+                      className="form-control bg-dark text-white border-purple"
+                      value={formData.password}
+                      onChange={handleChange}
                       required
                     />
-                    <span className="btn btn-outline-light" onClick={() => setShowPassword(!showPassword)} style={{ cursor: 'pointer' }}>
+                    <button
+                      type="button"
+                      className="btn btn-outline-light"
+                      onClick={() => setShowPassword(!showPassword)}
+                      tabIndex={-1}
+                    >
                       <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                    </span>
+                    </button>
                   </div>
                 </div>
 
                 {/* Confirm Password */}
                 <div className="mb-3">
-                  <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                  <label className="form-label">Confirm Password</label>
                   <div className="input-group">
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
-                      className="form-control bg-secondary text-light"
-                      id="confirmPassword"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      name="confirmPassword"
+                      className="form-control bg-dark text-white border-purple"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
                       required
                     />
-                    <span className="btn btn-outline-light" onClick={() => setShowConfirmPassword(!showConfirmPassword)} style={{ cursor: 'pointer' }}>
+                    <button
+                      type="button"
+                      className="btn btn-outline-light"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      tabIndex={-1}
+                    >
                       <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} />
-                    </span>
+                    </button>
                   </div>
                 </div>
 
