@@ -1,0 +1,141 @@
+/* =============================
+  Custom Purple Theme
+============================= */
+:root {
+  --bs-dark-purple: #2a0845;
+  --bs-purple: #6441a5;
+  --bs-purple-hover: #563d7c;
+  --bs-bg-dark: #121212;
+  --bs-bg-secondary: #1e1e1e;
+  --bs-card-border: #333;
+  --bs-input-border: #444;
+  --bs-text-light: #f8f9fa;
+}
+
+/* =============================
+  Core Backgrounds
+============================= */
+.bg-dark-purple {
+  background-color: var(--bs-dark-purple) !important;
+}
+
+.bg-purple {
+  background-color: var(--bs-purple) !important;
+  color: white !important;
+}
+
+.bg-dark-custom {
+  background-color: var(--bs-bg-secondary) !important;
+}
+
+/* =============================
+  Buttons
+============================= */
+.btn-purple {
+  background-color: var(--bs-purple) !important;
+  color: white !important;
+  border: none;
+}
+
+.btn-purple:hover {
+  background-color: var(--bs-purple-hover) !important;
+  color: white !important;
+}
+
+/* =============================
+  Dark Theme Base
+============================= */
+body {
+  background-color: var(--bs-bg-dark);
+  color: var(--bs-text-light);
+}
+
+.card {
+  border: 1px solid var(--bs-card-border);
+  background-color: var(--bs-bg-secondary);
+}
+
+.form-control,
+.form-select {
+  background-color: var(--bs-card-border) !important;
+  color: var(--bs-text-light) !important;
+  border: 1px solid var(--bs-input-border);
+}
+
+/* =============================
+  Navbar & Nav Pills
+============================= */
+.nav-link {
+  color: var(--bs-text-light) !important;
+}
+
+.nav-link.active,
+.nav-pills .nav-link.active {
+  background-color: var(--bs-purple) !important;
+  color: white !important;
+}
+
+.border-purple {
+  border-color: var(--bs-purple) !important;
+}
+
+.text-purple {
+  color: #a371f7 !important;
+}
+
+.table-purple th {
+   background-color: #5a4698; 
+  color: white;
+}
+
+.navbar-dark .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* Ensures white placeholder text */
+.placeholder-white::placeholder {
+  color: #ffffff !important;
+  opacity: 1;
+}
+
+/* Truncate text */
+.truncate-hover {
+  max-width: 200px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  position: relative;
+}
+
+.truncate-hover:hover {
+  -webkit-line-clamp: unset;
+  max-height: none;
+  overflow: visible;
+  z-index: 10;
+ 
+  border-radius: 4px;
+}
+
+/* Custom pagination styles */
+.pagination .page-link {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #6441a5; /* your purple */
+}
+
+.pagination .page-link:hover {
+  background-color: #6441a5;
+  color: white;
+  border-color: #6441a5;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #6441a5;
+  border-color: #6441a5;
+  color: white;
+}
