@@ -22,17 +22,14 @@ const ExhibitorLayout = () => {
   };
 
   const navItems = [
-    { to: "/exhibitor/", icon: "bi-speedometer2", label: "Dashboard" },
-    { to: "/exhibitor/expo-register", icon: "bi-person", label: "Expos" },
-    { to: "/exhibitor/my-booth", icon: "bi-shop", label: "My Booth" },
-    { to: "/exhibitor/messages", icon: "bi-chat-dots", label: "Messages" },
-    { to: "/exhibitor/exhibitor-profile", icon: "bi-person", label: "Profile" },
-    {
-      to: "/exhibitor/create-profile",
-      icon: "bi-person",
-      label: "Create Profile",
-    },
-  ];
+  { to: "/exhibitor/", icon: "bi-speedometer2", label: "Dashboard" }, 
+  { to: "/exhibitor/expo-register", icon: "bi-calendar-event", label: "Expos" }, 
+  { to: "/exhibitor/my-booth", icon: "bi-shop-window", label: "My Booth" }, 
+  { to: "/exhibitor/messages", icon: "bi-envelope-paper", label: "Messages" }, 
+  { to: "/exhibitor/exhibitor-profile", icon: "bi-person-badge", label: "Profile" }, 
+  { to: "/exhibitor/create-profile", icon: "bi-file-earmark-plus", label: "Create Profile" },
+];
+
 
   return (
     <div className="d-flex" style={{ minHeight: "100vh" }}>
@@ -75,7 +72,7 @@ const ExhibitorLayout = () => {
             <i className="bi bi-list"></i>
           </button>
 
-          <div className="ms-auto d-flex align-items-center gap-2">
+          <div className="ms-auto d-flex align-items-center gap-1">
             {/* Profile Icon */}
             <Link
               to="/exhibitor/profile"
@@ -86,12 +83,13 @@ const ExhibitorLayout = () => {
               <span className="text-purple d-none d-sm-inline">{username}</span>
             </Link>
 
-            {/* Logout Button */}
+            {/* Logout Button (Icon only, outline style) */}
             <button
-              className="btn btn-purple btn-sm d-flex align-items-center"
+              className="btn btn-outline-purple btn-sm d-flex align-items-center"
               onClick={handleLogout}
+              title="Logout"
             >
-              <i className="bi bi-box-arrow-right me-1"></i> Logout
+              <i className="bi bi-box-arrow-right fs-5 text-purple"></i>
             </button>
           </div>
         </nav>

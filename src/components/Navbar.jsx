@@ -23,7 +23,7 @@ const Navbar = () => {
       <div className="container-fluid">
         {/* Brand */}
         <Link to="/attendee/" className="navbar-brand text-purple fw-bold">
-          EventSphere
+          ShowCase360
         </Link>
 
         {/* Toggler */}
@@ -88,7 +88,7 @@ const Navbar = () => {
           </ul>
 
           {/* Right Side Buttons */}
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-1">
             {/* Bookmark Icon */}
             <Link
               to="/attendee/bookmark"
@@ -108,9 +108,13 @@ const Navbar = () => {
               <span className="text-purple d-none d-sm-inline">{username}</span>
             </Link>
 
-            {/* Logout Button */}
-            <button className="btn btn-purple btn-sm" onClick={handleLogout}>
-              <i className="bi bi-box-arrow-right me-1"></i> Logout
+            {/* Logout Button (Icon only, outline style) */}
+            <button
+              className="btn btn-outline-purple btn-sm d-flex align-items-center"
+              onClick={handleLogout}
+              title="Logout"
+            >
+              <i className="bi bi-box-arrow-right fs-5 text-purple"></i>
             </button>
           </div>
         </div>

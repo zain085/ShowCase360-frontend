@@ -9,7 +9,8 @@ const CustomTable = ({
   headers = [],
   rows = [],
   renderRow,
-  rowsPerPage = 5, // customizable row limit
+  rowsPerPage = 5,
+  onPageChange, // new prop
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -19,7 +20,10 @@ const CustomTable = ({
   const paginatedRows = rows.slice(startIndex, startIndex + rowsPerPage);
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      if (onPageChange) onPageChange(page); // notify parent
+    }
   };
 
   const renderPagination = () => {
@@ -28,8 +32,14 @@ const CustomTable = ({
     return (
       <div className="d-flex justify-content-center mt-3">
         <Pagination className="mb-0">
-          <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
-          <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+          <Pagination.First
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+          />
+          <Pagination.Prev
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
 
           {[...Array(totalPages)].map((_, idx) => (
             <Pagination.Item
@@ -41,8 +51,14 @@ const CustomTable = ({
             </Pagination.Item>
           ))}
 
-          <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
-          <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+          <Pagination.Next
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+          <Pagination.Last
+            onClick={() => handlePageChange(totalPages)}
+            disabled={currentPage === totalPages}
+          />
         </Pagination>
       </div>
     );
@@ -51,7 +67,13 @@ const CustomTable = ({
   return (
     <>
       <div className="table-responsive border border-purple rounded">
-        <Table striped bordered hover variant="dark" className="table-purple m-0">
+        <Table
+          striped
+          bordered
+          hover
+          variant="dark"
+          className="table-purple m-0"
+        >
           <thead>
             <tr>
               {headers.map((head, idx) => (

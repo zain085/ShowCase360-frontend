@@ -23,50 +23,22 @@ const AdminLayout = () => {
 
   const navItems = [
     { to: "/admin/", icon: "bi-speedometer2", label: "Dashboard" },
-    {
-      to: "/admin/manage-expos",
-      icon: "bi-calendar-event",
-      label: "Manage Expos",
-    },
-    {
-      to: "/admin/manage-exhibitors",
-      icon: "bi-people",
-      label: "Manage Exhibitors",
-    },
-    {
-      to: "/admin/manage-sessions",
-      icon: "bi-calendar-check",
-      label: "Manage Sessions",
-    },
-    {
-      to: "/admin/booth-allocation",
-      icon: "bi-grid",
-      label: "Booth Allocation",
-    },
-    {
-      to: "/admin/reports",
-      icon: "bi-file-earmark-bar-graph",
-      label: "Reports",
-    },
-    {
-      to: "/admin/fetch-feedback",
-      icon: "bi-chat-left-dots",
-      label: "Feedback",
-    },
-    {
-      to: "/admin/attendee-messages",
-      icon: "bi-envelope-paper",
-      label: "Messages",
-    },
+    { to: "/admin/manage-expos", icon: "bi-calendar-event", label: "Manage Expos" },
+    { to: "/admin/manage-exhibitors", icon: "bi-people", label: "Manage Exhibitors" },
+    { to: "/admin/manage-sessions", icon: "bi-calendar-check", label: "Manage Sessions" },
+    { to: "/admin/booth-allocation", icon: "bi-grid", label: "Booth Allocation" },
+    { to: "/admin/reports", icon: "bi-file-earmark-bar-graph", label: "Reports" },
+    { to: "/admin/fetch-feedback", icon: "bi-chat-left-dots", label: "Feedback" },
+    { to: "/admin/attendee-messages", icon: "bi-envelope-paper", label: "Messages" },
+    { to: "/admin/fetch-users", icon: "bi-people-fill", label: "Users Info" },
+    { to: "/admin/fetch-exhibitors", icon: "bi-building", label: "Exhibitors Info" },
   ];
 
   return (
     <div className="d-flex" style={{ minHeight: "100vh" }}>
       {/* Sidebar */}
       <div
-        className={`bg-dark-custom text-light ${
-          collapsed ? "d-none d-md-block" : ""
-        }`}
+        className={`bg-dark-custom text-light ${collapsed ? "d-none d-md-block" : ""}`}
         style={{ width: "250px" }}
       >
         <div className="p-3">
@@ -101,7 +73,7 @@ const AdminLayout = () => {
             <i className="bi bi-list"></i>
           </button>
 
-          <div className="ms-auto d-flex align-items-center gap-2">
+          <div className="ms-auto d-flex align-items-center gap-1">
             {/* Profile Icon */}
             <Link
               to="/admin/profile"
@@ -112,12 +84,13 @@ const AdminLayout = () => {
               <span className="text-purple d-none d-sm-inline">{username}</span>
             </Link>
 
-            {/* Logout Button */}
+            {/* Logout Button (Icon only, outline style) */}
             <button
-              className="btn btn-purple btn-sm d-flex align-items-center"
+              className="btn btn-outline-purple btn-sm d-flex align-items-center"
               onClick={handleLogout}
+              title="Logout"
             >
-              <i className="bi bi-box-arrow-right me-1"></i> Logout
+              <i className="bi bi-box-arrow-right fs-5 text-purple"></i>
             </button>
           </div>
         </nav>

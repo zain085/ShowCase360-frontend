@@ -30,7 +30,7 @@ const Footer = () => {
         </div>
 
         {/* Branding */}
-        <p className="mb-1">© {new Date().getFullYear()} EventSphere Management</p>
+        <p className="mb-1">© {new Date().getFullYear()} ShowCase360 Management</p>
         <small className="text-secondary">Empowering Expos, One Experience at a Time</small>
       </div>
     </footer>
