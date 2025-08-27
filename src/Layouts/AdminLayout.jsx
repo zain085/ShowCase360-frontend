@@ -14,6 +14,7 @@ const AdminLayout = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const username = user?.username || "User";
+  const profileImg = user?.profileImg || "User";
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -23,22 +24,56 @@ const AdminLayout = () => {
 
   const navItems = [
     { to: "/admin/", icon: "bi-speedometer2", label: "Dashboard" },
-    { to: "/admin/manage-expos", icon: "bi-calendar-event", label: "Manage Expos" },
-    { to: "/admin/manage-exhibitors", icon: "bi-people", label: "Manage Exhibitors" },
-    { to: "/admin/manage-sessions", icon: "bi-calendar-check", label: "Manage Sessions" },
-    { to: "/admin/booth-allocation", icon: "bi-grid", label: "Booth Allocation" },
-    { to: "/admin/reports", icon: "bi-file-earmark-bar-graph", label: "Reports" },
-    { to: "/admin/fetch-feedback", icon: "bi-chat-left-dots", label: "Feedback" },
-    { to: "/admin/attendee-messages", icon: "bi-envelope-paper", label: "Messages" },
+    {
+      to: "/admin/manage-expos",
+      icon: "bi-calendar-event",
+      label: "Manage Expos",
+    },
+    {
+      to: "/admin/manage-exhibitors",
+      icon: "bi-people",
+      label: "Manage Exhibitors",
+    },
+    {
+      to: "/admin/manage-sessions",
+      icon: "bi-calendar-check",
+      label: "Manage Sessions",
+    },
+    {
+      to: "/admin/booth-allocation",
+      icon: "bi-grid",
+      label: "Booth Allocation",
+    },
+    {
+      to: "/admin/reports",
+      icon: "bi-file-earmark-bar-graph",
+      label: "Reports",
+    },
+    {
+      to: "/admin/fetch-feedback",
+      icon: "bi-chat-left-dots",
+      label: "Feedback",
+    },
+    {
+      to: "/admin/attendee-messages",
+      icon: "bi-envelope-paper",
+      label: "Messages",
+    },
     { to: "/admin/fetch-users", icon: "bi-people-fill", label: "Users Info" },
-    { to: "/admin/fetch-exhibitors", icon: "bi-building", label: "Exhibitors Info" },
+    {
+      to: "/admin/fetch-exhibitors",
+      icon: "bi-building",
+      label: "Exhibitors Info",
+    },
   ];
 
   return (
     <div className="d-flex" style={{ minHeight: "100vh" }}>
       {/* Sidebar */}
       <div
-        className={`bg-dark-custom text-light ${collapsed ? "d-none d-md-block" : ""}`}
+        className={`bg-dark-custom text-light ${
+          collapsed ? "d-none d-md-block" : ""
+        }`}
         style={{ width: "250px" }}
       >
         <div className="p-3">
@@ -76,11 +111,27 @@ const AdminLayout = () => {
           <div className="ms-auto d-flex align-items-center gap-1">
             {/* Profile Icon */}
             <Link
-              to="/admin/profile"
+              to="/attendee/profile"
               className="btn btn-outline-purple btn-sm d-flex align-items-center gap-2"
               title="My Profile"
             >
-              <i className="bi bi-person-circle fs-5 text-purple"></i>
+              {profileImg ? (
+                <img
+                  src={profileImg}
+                  alt="profile"
+                  className="rounded-circle"
+                  style={{ width: "28px", height: "28px", objectFit: "cover" }}
+                />
+              ) : (
+                <div
+                  className="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                  style={{ width: "28px", height: "28px" }}
+                >
+                  <span className="text-white fw-bold">
+                    {username ? username.charAt(0).toUpperCase() : "U"}
+                  </span>
+                </div>
+              )}
               <span className="text-purple d-none d-sm-inline">{username}</span>
             </Link>
 

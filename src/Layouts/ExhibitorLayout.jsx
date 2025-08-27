@@ -14,6 +14,7 @@ const ExhibitorLayout = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const username = user?.username || "User";
+  const profileImg = user?.profileImg || "User";
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -22,14 +23,25 @@ const ExhibitorLayout = () => {
   };
 
   const navItems = [
-  { to: "/exhibitor/", icon: "bi-speedometer2", label: "Dashboard" }, 
-  { to: "/exhibitor/expo-register", icon: "bi-calendar-event", label: "Expos" }, 
-  { to: "/exhibitor/my-booth", icon: "bi-shop-window", label: "My Booth" }, 
-  { to: "/exhibitor/messages", icon: "bi-envelope-paper", label: "Messages" }, 
-  { to: "/exhibitor/exhibitor-profile", icon: "bi-person-badge", label: "Profile" }, 
-  { to: "/exhibitor/create-profile", icon: "bi-file-earmark-plus", label: "Create Profile" },
-];
-
+    { to: "/exhibitor/", icon: "bi-speedometer2", label: "Dashboard" },
+    {
+      to: "/exhibitor/expo-register",
+      icon: "bi-calendar-event",
+      label: "Expos",
+    },
+    { to: "/exhibitor/my-booth", icon: "bi-shop-window", label: "My Booth" },
+    { to: "/exhibitor/messages", icon: "bi-envelope-paper", label: "Messages" },
+    {
+      to: "/exhibitor/exhibitor-profile",
+      icon: "bi-person-badge",
+      label: "Profile",
+    },
+    {
+      to: "/exhibitor/create-profile",
+      icon: "bi-file-earmark-plus",
+      label: "Create Profile",
+    },
+  ];
 
   return (
     <div className="d-flex" style={{ minHeight: "100vh" }}>
@@ -75,11 +87,27 @@ const ExhibitorLayout = () => {
           <div className="ms-auto d-flex align-items-center gap-1">
             {/* Profile Icon */}
             <Link
-              to="/exhibitor/profile"
+              to="/attendee/profile"
               className="btn btn-outline-purple btn-sm d-flex align-items-center gap-2"
               title="My Profile"
             >
-              <i className="bi bi-person-circle fs-5 text-purple"></i>
+              {profileImg ? (
+                <img
+                  src={profileImg}
+                  alt="profile"
+                  className="rounded-circle"
+                  style={{ width: "28px", height: "28px", objectFit: "cover" }}
+                />
+              ) : (
+                <div
+                  className="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                  style={{ width: "28px", height: "28px" }}
+                >
+                  <span className="text-white fw-bold">
+                    {username ? username.charAt(0).toUpperCase() : "U"}
+                  </span>
+                </div>
+              )}
               <span className="text-purple d-none d-sm-inline">{username}</span>
             </Link>
 
