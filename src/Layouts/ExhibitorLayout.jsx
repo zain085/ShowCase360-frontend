@@ -87,7 +87,7 @@ const ExhibitorLayout = () => {
           <div className="ms-auto d-flex align-items-center gap-1">
             {/* Profile Icon */}
             <Link
-              to="/attendee/profile"
+              to="/exhibitor/profile"
               className="btn btn-outline-purple btn-sm d-flex align-items-center gap-2"
               title="My Profile"
             >
