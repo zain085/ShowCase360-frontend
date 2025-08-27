@@ -15,7 +15,7 @@ const Home = () => {
                 Experience
               </h1>
               <p className="lead text-white-50 mb-4">
-                EventSphere bridges the gap between physical and virtual events,
+                ShowCase360 bridges the gap between physical and virtual events,
                 offering seamless access to global expos, interactive sessions,
                 and meaningful networking opportunities.
               </p>
@@ -226,7 +226,7 @@ const Home = () => {
       <section className="py-5 bg-dark">
         <div className="container">
           <div className="text-center mb-5">
-            <h2 className="text-purple fw-bold">Why Choose EventSphere?</h2>
+            <h2 className="text-purple fw-bold">Why Choose ShowCase360?</h2>
             <p className="text-white-50 lead">
               Empower your event journey with tools tailored for every attendee.
               From registration to networking — we've got you covered.
@@ -406,7 +406,7 @@ const Home = () => {
             {[
               {
                 quote:
-                  "EventSphere revolutionized how we organize our annual conference.",
+                  "ShowCase360 revolutionized how we organize our annual conference.",
                 name: "Jessica T.",
                 role: "Event Organizer, TechConf",
                 img: "1",

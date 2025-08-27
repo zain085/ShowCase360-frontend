@@ -11,6 +11,7 @@ const Navbar = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
   const username = user?.username || "User";
+  const profileImg = user?.profileImg || "User";
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -104,7 +105,23 @@ const Navbar = () => {
               className="btn btn-outline-purple btn-sm d-flex align-items-center gap-2"
               title="My Profile"
             >
-              <i className="bi bi-person-circle fs-5 text-purple"></i>
+              {profileImg ? (
+                <img
+                  src={profileImg}
+                  alt="profile"
+                  className="rounded-circle"
+                  style={{ width: "28px", height: "28px", objectFit: "cover" }}
+                />
+              ) : (
+                <div
+                  className="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                  style={{ width: "28px", height: "28px" }}
+                >
+                  <span className="text-white fw-bold">
+                    {username ? username.charAt(0).toUpperCase() : "U"}
+                  </span>
+                </div>
+              )}
               <span className="text-purple d-none d-sm-inline">{username}</span>
             </Link>
 

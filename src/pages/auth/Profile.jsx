@@ -3,6 +3,9 @@ import React, {
   useState,
 } from 'react';
 
+import {
+  useNavigate,
+} from 'react-router-dom'; // ✅ so we can redirect after deletion
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance';
@@ -21,6 +24,8 @@ const Profile = () => {
     profileImg: "",
     role: "",
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -66,6 +71,28 @@ const Profile = () => {
     }
   };
 
+  // ✅ Delete Account handler
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to permanently delete your account? This action cannot be undone."
+    );
+    if (!confirmDelete) return;
+
+    try {
+      const { data } = await axiosInstance.delete("/auth/delete-account");
+      toast.success(data.message || "Account deleted successfully");
+
+      // Clear token from localStorage (if stored)
+      localStorage.removeItem("token");
+
+      // Redirect to home/login
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete account");
+    }
+  };
+
   return (
     <FormLayout title="My Profile" onSubmit={handleSubmit}>
       <InputField
@@ -100,7 +127,7 @@ const Profile = () => {
         onChange={handleChange}
         options={[
           { label: "Male", value: "male" },
-          { label: "Female", value: "female" }
+          { label: "Female", value: "female" },
         ]}
       />
 
@@ -131,10 +158,21 @@ const Profile = () => {
         />
       </div>
 
-      <div className="text-end">
+      <div className="d-flex justify-content-between">
         <button type="submit" className="btn btn-purple px-4">
           Update
         </button>
+
+        {/* ✅ Only show Delete button for Attendees */}
+        {formData.role === "attendee" && (
+          <button
+            type="button"
+            className="btn btn-danger px-4"
+            onClick={handleDeleteAccount}
+          >
+            Delete Account
+          </button>
+        )}
       </div>
     </FormLayout>
   );
