@@ -61,7 +61,7 @@ const Contact = () => {
   };
 
   return (
-    <FormLayout title="Contact Us" onSubmit={handleSubmit}>
+    <FormLayout title={<span className="text-purple fw-bold mb-4">Contact Us</span>} onSubmit={handleSubmit}>
       <div className="mb-3">
         <label className="form-label text-light">Name</label>
         <input

@@ -9,28 +9,33 @@ import {
 } from '../../components/Form';
 
 const Feedback = () => {
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axiosInstance.post('/feedback', { message: feedback });
+      const res = await axiosInstance.post("/feedback", { message: feedback });
 
       if (res.data.success) {
-        toast.success(res.data.message || 'Feedback submitted!');
-        setFeedback('');
+        toast.success(res.data.message || "Feedback submitted!");
+        setFeedback("");
       }
     } catch (err) {
       console.error(err);
       const errorMsg =
-        err.response?.data?.message || 'Something went wrong. Try again.';
+        err.response?.data?.message || "Something went wrong. Try again.";
       toast.error(errorMsg);
     }
   };
 
   return (
-    <FormLayout title="Give Us Your Feedback" onSubmit={handleSubmit}>
+    <FormLayout
+      title={
+        <span className="text-purple fw-bold mb-4">Give Us Your Feedback</span>
+      }
+      onSubmit={handleSubmit}
+    >
       <TextAreaField
         label="Your Feedback"
         name="feedback"

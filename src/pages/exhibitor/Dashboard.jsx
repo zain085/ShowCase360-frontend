@@ -1,9 +1,14 @@
 import React from 'react';
 
 const ExhibitorDashboard = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user?.username || "User";
+
   return (
     <div className="container py-4">
-      <h3 className="text-light mb-4">Welcome back</h3>
+      <h3 className="text-light mb-4">
+        Welcome back <span className="text-purple">{username}</span>
+      </h3>
 
       {/* Stats Cards */}
       <div className="row g-4 mb-5">

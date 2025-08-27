@@ -3,9 +3,7 @@ import React, {
   useState,
 } from 'react';
 
-import {
-  useNavigate,
-} from 'react-router-dom'; // ✅ so we can redirect after deletion
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance';
@@ -71,7 +69,7 @@ const Profile = () => {
     }
   };
 
-  // ✅ Delete Account handler
+  // Delete Account handler
   const handleDeleteAccount = async () => {
     const confirmDelete = window.confirm(
       "Are you sure you want to permanently delete your account? This action cannot be undone."
@@ -163,7 +161,7 @@ const Profile = () => {
           Update
         </button>
 
-        {/* ✅ Only show Delete button for Attendees */}
+        {/* Only show Delete button for Attendees */}
         {formData.role === "attendee" && (
           <button
             type="button"
