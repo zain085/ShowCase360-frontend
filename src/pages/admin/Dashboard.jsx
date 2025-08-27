@@ -3,6 +3,7 @@ import React, {
   useState,
 } from 'react';
 
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance';
@@ -70,10 +71,20 @@ const Dashboard = () => {
         value: stats.totalBooths,
         subtitle: "10 available",
       },
-      {
+      // {
+      //   icon: "bi-graph-up-arrow",
+      //   title: "Analytics & Reports",
+      //   value: "View",
+      //   subtitle: "Updated regularly",
+      // },
+       {
         icon: "bi-graph-up-arrow",
         title: "Analytics & Reports",
-        value: "View",
+        value: (
+          <Link to="/admin/reports" className="text-purple text-decoration-none">
+            View
+          </Link>
+        ),
         subtitle: "Updated regularly",
       },
     ]
