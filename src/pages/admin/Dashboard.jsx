@@ -33,51 +33,51 @@ const Dashboard = () => {
   }, []);
 
   const cardData = stats
-    ? [
-        {
-          icon: "bi-calendar-event",
-          title: "Total Expos",
-          value: stats.expos,
-          subtitle: "Updated today",
-        },
-        {
-          icon: "bi-person-badge",
-          title: "Exhibitors",
-          value: stats.exhibitors,
-          subtitle: "+3 this week",
-        },
-        {
-          icon: "bi-people",
-          title: "Attendees",
-          value: stats.attendees,
-          subtitle: "+15 today",
-        },
-        {
-          icon: "bi-chat-dots",
-          title: "Feedbacks",
-          value: stats.feedbacks,
-          subtitle: "Reviewed this week",
-        },
-        {
-          icon: "bi-easel",
-          title: "Total Sessions",
-          value: stats.sessions,
-          subtitle: "Scheduled for next month",
-        },
-        {
-          icon: "bi-door-open",
-          title: "Total Booths",
-          value: stats.booths,
-          subtitle: "10 available",
-        },
-        {
-          icon: "bi-graph-up-arrow",
-          title: "Analytics & Reports",
-          value: "View",
-          subtitle: "Updated regularly",
-        },
-      ]
-    : [];
+  ? [
+      {
+        icon: "bi-calendar-event",
+        title: "Total Expos",
+        value: stats.totalExpos,
+        subtitle: "Updated today",
+      },
+      {
+        icon: "bi-person-badge",
+        title: "Exhibitors",
+        value: stats.totalExhibitors,
+        subtitle: "+3 this week",
+      },
+      {
+        icon: "bi-people",
+        title: "Attendees",
+        value: stats.totalAttendees,
+        subtitle: "+15 today",
+      },
+      {
+        icon: "bi-chat-dots",
+        title: "Feedbacks",
+        value: stats.totalFeedbacks,
+        subtitle: "Reviewed this week",
+      },
+      {
+        icon: "bi-easel",
+        title: "Total Sessions",
+        value: stats.totalSessions,
+        subtitle: "Scheduled for next month",
+      },
+      {
+        icon: "bi-door-open",
+        title: "Total Booths",
+        value: stats.totalBooths,
+        subtitle: "10 available",
+      },
+      {
+        icon: "bi-graph-up-arrow",
+        title: "Analytics & Reports",
+        value: "View",
+        subtitle: "Updated regularly",
+      },
+    ]
+  : [];
 
   return (
     <div className="container py-4">
