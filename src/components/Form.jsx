@@ -15,7 +15,7 @@ export const FormLayout = ({ title, children, onSubmit }) => {
 };
 
 // === Reusable Input Field ===
-export const InputField = ({ label, name, type = 'text', value, onChange, required = true }) => (
+export const InputField = ({ label, name, type = 'text', value, onChange, required = false }) => (
   <div className="mb-3">
     <label className="form-label">{label}</label>
     <input

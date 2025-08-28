@@ -7,6 +7,8 @@ import React, {
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance'; // adjust path if needed
+import ConfirmModal
+  from '../../components/ConfirmModal'; // adjust path if needed
 import CustomTable from '../../components/Table'; // adjust path if needed
 
 // Small helper to reliably init/dispose Bootstrap tooltip per element
@@ -31,7 +33,12 @@ const TooltipText = ({ title, placement = "top", children }) => {
   }, [title, placement, children]);
 
   return (
-    <span ref={ref} data-bs-toggle="tooltip" data-bs-placement={placement} title={title}>
+    <span
+      ref={ref}
+      data-bs-toggle="tooltip"
+      data-bs-placement={placement}
+      title={title}
+    >
       {children}
     </span>
   );
@@ -40,6 +47,10 @@ const TooltipText = ({ title, placement = "top", children }) => {
 const FetchUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // For confirm modal
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   // Fetch all users (non-admins)
   const fetchUsers = async () => {
@@ -65,6 +76,30 @@ const FetchUsers = () => {
     fetchUsers();
   }, []);
 
+  // Handle delete
+  const confirmDelete = (id) => {
+    setSelectedUser(id);
+    setShowModal(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const res = await axiosInstance.delete(`/auth/users/${selectedUser}`);
+      if (res.data.success) {
+        toast.success(res.data.message || "User deleted");
+        setUsers(users.filter((u) => u._id !== selectedUser));
+      } else {
+        toast.error(res.data.message || "Failed to delete user");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error deleting user");
+    } finally {
+      setShowModal(false);
+      setSelectedUser(null);
+    }
+  };
+
   // Table headers
   const headers = [
     "User ID",
@@ -75,19 +110,21 @@ const FetchUsers = () => {
     "Gender",
     "Address",
     "Sessions",
+    "Actions",
   ];
 
   // Render table row for each user
   const renderRow = (user) => {
     const shortId =
       user._id && user._id.length > 10
-        ? `${user._id.substring(0, 6)}...${user._id.substring(user._id.length - 4)}`
+        ? `${user._id.substring(0, 6)}...${user._id.substring(
+            user._id.length - 4
+          )}`
         : user._id;
 
     return (
       <>
         <td>
-          {/* TooltipText handles Bootstrap tooltip reliably */}
           <TooltipText title={user._id} placement="top">
             {shortId}
           </TooltipText>
@@ -122,6 +159,15 @@ const FetchUsers = () => {
         <td>{user.gender || "N/A"}</td>
         <td>{user.address || "N/A"}</td>
         <td>{user.registeredSessions?.length || 0}</td>
+        <td>
+          <button
+            className="btn btn-sm btn-outline-danger"
+            title="Delete"
+            onClick={() => confirmDelete(user._id)}
+          >
+            <i className="bi bi-trash3-fill"></i>
+          </button>
+        </td>
       </>
     );
   };
@@ -140,6 +186,18 @@ const FetchUsers = () => {
           rowsPerPage={5}
         />
       )}
+
+      {/* Confirm Modal */}
+      <ConfirmModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        title="Delete User"
+        message="Are you sure you want to delete this user? This action cannot be undone."
+        onConfirm={handleDelete}
+        confirmText="Delete"
+        cancelText="Cancel"
+        danger
+      />
     </div>
   );
 };

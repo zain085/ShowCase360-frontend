@@ -75,7 +75,7 @@ const ConfirmModal = ({
       style={{ backdropFilter: 'blur(2px)' }}
     >
       <div style={modalStyles.modalContent}>
-        <Modal.Header closeButton style={modalStyles.header}>
+        <Modal.Header closeButton style={modalStyles.header} closeVariant="white">
           <Modal.Title style={modalStyles.title} className="text-white">
             {danger && <i className="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>}
             <span>{title}</span>

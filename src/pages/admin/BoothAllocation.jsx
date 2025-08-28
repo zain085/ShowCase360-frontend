@@ -7,12 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance';
+import ConfirmModal from '../../components/ConfirmModal';
 import CustomTable from '../../components/Table';
 
 const ManageBooths = () => {
   const [availableBooths, setAvailableBooths] = useState([]);
   const [reservedBooths, setReservedBooths] = useState([]);
   const [filter, setFilter] = useState("available");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,23 +28,30 @@ const ManageBooths = () => {
         axiosInstance.get("/booths/available"),
         axiosInstance.get("/booths/reserved"),
       ]);
-      setAvailableBooths(availableRes.data.booths);
-      setReservedBooths(reservedRes.data.booths);
+      setAvailableBooths(availableRes.data.booths || []);
+      setReservedBooths(reservedRes.data.booths || []);
     } catch (err) {
-      console.error("Error fetching booths:", err);
+      console.error(err);
       toast.error("Failed to fetch booth data");
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this booth?")) return;
+  const confirmDelete = (id) => {
+    setSelectedId(id);
+    setShowModal(true);
+  };
+
+  const handleDelete = async () => {
     try {
-      await axiosInstance.delete(`/booths/${id}`);
+      await axiosInstance.delete(`/booths/${selectedId}`);
       toast.success("Booth deleted successfully");
       fetchBooths();
     } catch (err) {
-      console.error("Error deleting booth:", err);
+      console.error(err);
       toast.error("Failed to delete booth");
+    } finally {
+      setShowModal(false);
+      setSelectedId(null);
     }
   };
 
@@ -53,7 +63,17 @@ const ManageBooths = () => {
     <>
       <td>{booth.boothNumber}</td>
       <td>{booth.location}</td>
-      <td>{booth.status}</td>
+      <td
+        className={`fw-bold ${
+          booth.status === "available"
+            ? "text-success"
+            : booth.status === "reserved"
+            ? "text-danger"
+            : "text-light"
+        }`}
+      >
+        {booth.status}
+      </td>
       <td>
         {booth.exhibitorId
           ? booth.exhibitorId.companyName || booth.exhibitorId._id || "Assigned"
@@ -72,7 +92,7 @@ const ManageBooths = () => {
           <button
             className="btn btn-sm btn-outline-danger"
             title="Delete"
-            onClick={() => handleDelete(booth._id)}
+            onClick={() => confirmDelete(booth._id)}
           >
             <i className="bi bi-trash3-fill"></i>
           </button>
@@ -82,33 +102,54 @@ const ManageBooths = () => {
   );
 
   return (
-    <div className="container py-4 text-white">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Manage Booths</h2>
-        <button
-          className="btn btn-purple"
-          onClick={() => navigate("/admin/booths/add")}
-        >
-          + Add Booth
-        </button>
+    <div className="bg-dark min-vh-100 text-white py-4">
+      <div className="container">
+        {/* Header */}
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2 className="text-light">Manage Booths</h2>
+          <button
+            className="btn btn-purple"
+            onClick={() => navigate("/admin/booths/add")}
+          >
+            + Add Booth
+          </button>
+        </div>
+
+        {/* Filter Toggle */}
+        <div className="btn-group mb-4">
+          <button
+            className={`btn ${
+              filter === "available" ? "btn-purple" : "btn-outline-light"
+            }`}
+            onClick={() => setFilter("available")}
+          >
+            Available Booths
+          </button>
+          <button
+            className={`btn ${
+              filter === "reserved" ? "btn-purple" : "btn-outline-light"
+            }`}
+            onClick={() => setFilter("reserved")}
+          >
+            Reserved Booths
+          </button>
+        </div>
+
+        {/* Table */}
+        <CustomTable headers={headers} rows={boothsToRender} renderRow={renderRow} />
       </div>
 
-      <div className="btn-group mb-4">
-        <button
-          className={`btn ${filter === "available" ? "btn-purple" : "btn-outline-light"}`}
-          onClick={() => setFilter("available")}
-        >
-          Available Booths
-        </button>
-        <button
-          className={`btn ${filter === "reserved" ? "btn-purple" : "btn-outline-light"}`}
-          onClick={() => setFilter("reserved")}
-        >
-          Reserved Booths
-        </button>
-      </div>
-
-      <CustomTable headers={headers} rows={boothsToRender} renderRow={renderRow} />
+      {/* Confirm Modal */}
+      <ConfirmModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        title="Delete Booth"
+        message="Are you sure you want to delete this booth?"
+        onConfirm={handleDelete}
+        confirmText="Delete"
+        cancelText="Cancel"
+        danger
+      />
     </div>
   );
 };

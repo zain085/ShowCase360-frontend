@@ -6,8 +6,9 @@ import React, {
 
 import { toast } from 'react-toastify';
 
-import axiosInstance from '../../api/axiosInstance'; // adjust path if needed
-import CustomTable from '../../components/Table'; // adjust path if needed
+import axiosInstance from '../../api/axiosInstance';
+import ConfirmModal from '../../components/ConfirmModal'; // adjust path
+import CustomTable from '../../components/Table';
 
 // Small helper to reliably init/dispose Bootstrap tooltip per element
 const TooltipText = ({ title, placement = "top", children }) => {
@@ -15,7 +16,6 @@ const TooltipText = ({ title, placement = "top", children }) => {
 
   useEffect(() => {
     if (!ref.current || !window?.bootstrap?.Tooltip) return;
-    // Dispose existing instance if any
     const old = window.bootstrap.Tooltip.getInstance(ref.current);
     if (old) old.dispose();
 
@@ -23,7 +23,7 @@ const TooltipText = ({ title, placement = "top", children }) => {
       title,
       placement,
       trigger: "hover",
-      container: "body", // avoids clipping in responsive tables
+      container: "body",
     });
 
     return () => instance?.dispose();
@@ -39,6 +39,8 @@ const TooltipText = ({ title, placement = "top", children }) => {
 const FetchExhibitors = () => {
   const [exhibitors, setExhibitors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
   // Fetch all exhibitors
   const fetchExhibitors = async () => {
@@ -64,9 +66,34 @@ const FetchExhibitors = () => {
     fetchExhibitors();
   }, []);
 
+  // Open confirm modal
+  const confirmDelete = (id) => {
+    setSelectedId(id);
+    setShowConfirm(true);
+  };
+
+  // Handle delete exhibitor
+  const handleDelete = async () => {
+    try {
+      const res = await axiosInstance.delete(`/auth/users/${selectedId}`);
+      if (res.data.success) {
+        toast.success(res.data.message || "Exhibitor deleted");
+        setExhibitors((prev) => prev.filter((e) => e._id !== selectedId));
+      } else {
+        toast.error(res.data.message || "Failed to delete exhibitor");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error deleting exhibitor");
+    } finally {
+      setShowConfirm(false);
+      setSelectedId(null);
+    }
+  };
+
   // Table headers
   const headers = [
-    "Exhibitor ID",
+    "User ID",
     "Profile",
     "Username",
     "Email",
@@ -74,6 +101,7 @@ const FetchExhibitors = () => {
     "Gender",
     "Address",
     "Expos",
+    "Actions",
   ];
 
   // Render row for each exhibitor
@@ -124,6 +152,17 @@ const FetchExhibitors = () => {
         <td>{user.gender || "N/A"}</td>
         <td>{user.address || "N/A"}</td>
         <td>{user.registeredExpos?.length || 0}</td>
+
+        {/* Delete button */}
+        <td>
+          <button
+            className="btn btn-sm btn-outline-danger"
+            title="Delete"
+            onClick={() => confirmDelete(user._id)}
+          >
+            <i className="bi bi-trash3-fill"></i>
+          </button>
+        </td>
       </>
     );
   };
@@ -142,6 +181,18 @@ const FetchExhibitors = () => {
           rowsPerPage={5}
         />
       )}
+
+      {/* Confirm Delete Modal */}
+      <ConfirmModal
+        show={showConfirm}
+        onHide={() => setShowConfirm(false)}
+        title="Delete Exhibitor"
+        message="Are you sure you want to delete this exhibitor?"
+        onConfirm={handleDelete}
+        confirmText="Delete"
+        cancelText="Cancel"
+        danger
+      />
     </div>
   );
 };

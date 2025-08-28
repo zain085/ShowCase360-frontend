@@ -10,10 +10,13 @@ import {
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance';
+import ConfirmModal from '../../components/ConfirmModal'; // import your modal
 import CustomTable from '../../components/Table';
 
 const ManageExpos = () => {
   const [expos, setExpos] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedExpoId, setSelectedExpoId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,15 +33,22 @@ const ManageExpos = () => {
     }
   };
 
-  const handleDelete = async (expoId) => {
-    if (!window.confirm("Are you sure you want to delete this expo?")) return;
+  const handleDeleteClick = (expoId) => {
+    setSelectedExpoId(expoId);
+    setShowModal(true);
+  };
+
+  const confirmDelete = async () => {
     try {
-      await axiosInstance.delete(`/expos/${expoId}`);
-      setExpos((prev) => prev.filter((expo) => expo._id !== expoId));
+      await axiosInstance.delete(`/expos/${selectedExpoId}`);
+      setExpos((prev) => prev.filter((expo) => expo._id !== selectedExpoId));
       toast.success("Expo deleted successfully");
     } catch (err) {
       console.error("Error deleting expo:", err);
       toast.error("Failed to delete expo");
+    } finally {
+      setShowModal(false);
+      setSelectedExpoId(null);
     }
   };
 
@@ -79,7 +89,7 @@ const ManageExpos = () => {
                 <button
                   className="btn btn-sm btn-outline-danger"
                   title="Delete"
-                  onClick={() => handleDelete(expo._id)}
+                  onClick={() => handleDeleteClick(expo._id)}
                 >
                   <i className="bi bi-trash3-fill"></i>
                 </button>
@@ -87,6 +97,18 @@ const ManageExpos = () => {
             </td>
           </>
         )}
+      />
+
+      {/* Confirmation Modal */}
+      <ConfirmModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        title="Delete Expo"
+        message="Are you sure you want to delete this expo? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        danger
+        onConfirm={confirmDelete}
       />
     </div>
   );

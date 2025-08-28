@@ -7,10 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance';
+import ConfirmModal from '../../components/ConfirmModal'; // import modal
 import CustomTable from '../../components/Table';
 
 const ManageExhibitors = () => {
   const [exhibitors, setExhibitors] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalConfig, setModalConfig] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,48 +31,76 @@ const ManageExhibitors = () => {
     fetchExhibitors();
   }, []);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this exhibitor?")) return;
-    try {
-      await axiosInstance.delete(`/exhibitors/${id}`);
-      setExhibitors((prev) => prev.filter((ex) => ex._id !== id));
-      toast.success("Exhibitor deleted successfully");
-    } catch (err) {
-      console.error("Error deleting exhibitor:", err);
-      toast.error("Failed to delete exhibitor");
-    }
+  const openModal = ({ title, message, onConfirm, danger = false }) => {
+    setModalConfig({ title, message, onConfirm, danger });
+    setShowModal(true);
   };
 
-  const handleApprove = async (id) => {
-    if (!window.confirm("Are you sure you want to approve this exhibitor?")) return;
-    try {
-      await axiosInstance.put(`/exhibitors/${id}/approve`);
-      setExhibitors((prev) =>
-        prev.map((ex) =>
-          ex._id === id ? { ...ex, applicationStatus: "approved" } : ex
-        )
-      );
-      toast.success("Exhibitor approved");
-    } catch (err) {
-      console.error("Error approving exhibitor:", err);
-      toast.error("Failed to approve exhibitor");
-    }
+  const handleDelete = (id) => {
+    openModal({
+      title: "Delete Exhibitor",
+      message: "Are you sure you want to delete this exhibitor? This action cannot be undone.",
+      danger: true,
+      onConfirm: async () => {
+        try {
+          await axiosInstance.delete(`/exhibitors/${id}`);
+          setExhibitors((prev) => prev.filter((ex) => ex._id !== id));
+          toast.success("Exhibitor deleted successfully");
+        } catch (err) {
+          console.error("Error deleting exhibitor:", err);
+          toast.error("Failed to delete exhibitor");
+        } finally {
+          setShowModal(false);
+        }
+      },
+    });
   };
 
-  const handleReject = async (id) => {
-    if (!window.confirm("Are you sure you want to reject this exhibitor?")) return;
-    try {
-      await axiosInstance.put(`/exhibitors/${id}/reject`);
-      setExhibitors((prev) =>
-        prev.map((ex) =>
-          ex._id === id ? { ...ex, applicationStatus: "rejected" } : ex
-        )
-      );
-      toast.success("Exhibitor rejected");
-    } catch (err) {
-      console.error("Error rejecting exhibitor:", err);
-      toast.error("Failed to reject exhibitor");
-    }
+  const handleApprove = (id) => {
+    openModal({
+      title: "Approve Exhibitor",
+      message: "Are you sure you want to approve this exhibitor?",
+      onConfirm: async () => {
+        try {
+          await axiosInstance.put(`/exhibitors/${id}/approve`);
+          setExhibitors((prev) =>
+            prev.map((ex) =>
+              ex._id === id ? { ...ex, applicationStatus: "approved" } : ex
+            )
+          );
+          toast.success("Exhibitor approved");
+        } catch (err) {
+          console.error("Error approving exhibitor:", err);
+          toast.error("Failed to approve exhibitor");
+        } finally {
+          setShowModal(false);
+        }
+      },
+    });
+  };
+
+  const handleReject = (id) => {
+    openModal({
+      title: "Reject Exhibitor",
+      message: "Are you sure you want to reject this exhibitor?",
+      danger: true,
+      onConfirm: async () => {
+        try {
+          await axiosInstance.put(`/exhibitors/${id}/reject`);
+          setExhibitors((prev) =>
+            prev.map((ex) =>
+              ex._id === id ? { ...ex, applicationStatus: "rejected" } : ex
+            )
+          );
+          toast.success("Exhibitor rejected");
+        } catch (err) {
+          console.error("Error rejecting exhibitor:", err);
+          toast.error("Failed to reject exhibitor");
+        } finally {
+          setShowModal(false);
+        }
+      },
+    });
   };
 
   const headers = [
@@ -175,6 +206,18 @@ const ManageExhibitors = () => {
             </td>
           </>
         )}
+      />
+
+      {/* Confirmation Modal */}
+      <ConfirmModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        onConfirm={modalConfig.onConfirm}
+        confirmText="Confirm"
+        cancelText="Cancel"
+        danger={modalConfig.danger}
       />
     </div>
   );

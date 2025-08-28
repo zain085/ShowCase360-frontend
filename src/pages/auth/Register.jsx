@@ -43,37 +43,43 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
+  if (formData.password !== formData.confirmPassword) {
+    toast.error('Passwords do not match');
+    return;
+  }
+
+  try {
+    const { name, email, password, address, gender, role, profileImg } = formData;
+
+    const payload = {
+      username: name,
+      email,
+      password,
+      address,
+      gender,
+      role,
+    };
+
+    if (profileImg) {
+      payload.profileImg = profileImg; 
     }
 
-    try {
-      const { name, email, password, address, gender, role, profileImg } = formData;
+    const res = await axiosInstance.post('/auth/register', payload);
 
-      const res = await axiosInstance.post('/auth/register', {
-        username: name,
-        email,
-        password,
-        address,
-        gender,
-        role,
-        profileImg,
-      });
-
-      if (res.data.success) {
-        toast.success('Registration successful');
-        navigate('/login');
-      } else {
-        toast.error(res.data.message || 'Registration failed');
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error(err.response?.data?.message || 'Registration failed');
+    if (res.data.success) {
+      toast.success('Registration successful');
+      navigate('/login');
+    } else {
+      toast.error(res.data.message || 'Registration failed');
     }
-  };
+  } catch (err) {
+    console.error(err);
+    toast.error(err.response?.data?.message || 'Registration failed');
+  }
+};
+
 
   return (
     <div className="container-fluid bg-dark" style={{ minHeight: '100vh' }}>

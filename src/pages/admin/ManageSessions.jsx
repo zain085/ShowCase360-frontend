@@ -9,10 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance';
+import ConfirmModal from '../../components/ConfirmModal';
 import CustomTable from '../../components/Table';
 
 const ManageSessions = () => {
   const [sessions, setSessions] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,16 +32,22 @@ const ManageSessions = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this session?"))
-      return;
+  const confirmDelete = (id) => {
+    setSelectedId(id);
+    setShowModal(true);
+  };
+
+  const handleDelete = async () => {
     try {
-      await axiosInstance.delete(`/sessions/${id}`);
+      await axiosInstance.delete(`/sessions/${selectedId}`);
       toast.success("Session deleted successfully!");
       fetchSessions();
     } catch (err) {
       console.error("Error deleting session:", err);
       toast.error("Failed to delete session.");
+    } finally {
+      setShowModal(false);
+      setSelectedId(null);
     }
   };
 
@@ -101,7 +110,7 @@ const ManageSessions = () => {
           <button
             className="btn btn-sm btn-outline-danger"
             title="Delete"
-            onClick={() => handleDelete(session._id)}
+            onClick={() => confirmDelete(session._id)}
           >
             <i className="bi bi-trash3-fill"></i>
           </button>
@@ -125,6 +134,18 @@ const ManageSessions = () => {
 
         <CustomTable headers={headers} rows={sessions} renderRow={renderRow} />
       </div>
+
+      {/* Confirm Modal */}
+      <ConfirmModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        title="Delete Session"
+        message="Are you sure you want to delete this session?"
+        onConfirm={handleDelete}
+        confirmText="Delete"
+        cancelText="Cancel"
+        danger
+      />
     </div>
   );
 };
