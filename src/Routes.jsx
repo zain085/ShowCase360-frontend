@@ -17,6 +17,7 @@ import EditBooth from './pages/admin/EditBooth';
 import EditExhibitor from './pages/admin/EditExhibitor';
 import EditExpo from './pages/admin/EditExpo';
 import EditSession from './pages/admin/EditSession';
+import ExhibitorMessages from './pages/admin/ExhibitorMessages';
 import FetchExhibitors from './pages/admin/FetchExhibitors';
 import FetchFeedback from './pages/admin/FetchFeedback';
 import FetchUsers from './pages/admin/FetchUsers';
@@ -75,6 +76,7 @@ const AppRoutes = () => {
           <Route path="reports" element={<Reports />} />
           <Route path="fetch-feedback" element={<FetchFeedback />} />
           <Route path="attendee-messages" element={<AttendeeMessages />} />
+          <Route path="exhibitor-messages" element={<ExhibitorMessages />} />
           <Route path="profile" element={<Profile />} />
           <Route path="fetch-users" element={<FetchUsers />} />
           <Route path="fetch-exhibitors" element={<FetchExhibitors />} />

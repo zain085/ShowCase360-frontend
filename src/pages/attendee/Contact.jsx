@@ -14,9 +14,9 @@ import {
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [loading, setLoading] = useState(false);
+  const [admin, setAdmin] = useState(null); // Store admin info
 
-  const adminId = "6870e3cddc60d2a042d96d60";
-
+  // Pre-fill user name and email
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user?.username && user?.email) {
@@ -28,6 +28,20 @@ const Contact = () => {
     }
   }, []);
 
+  // Fetch admin dynamically
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        const res = await axiosInstance.get("/auth/admin");
+        if (res.data.success) setAdmin(res.data.data);
+      } catch (err) {
+        console.error(err);
+        toast.error("Unable to fetch admin info");
+      }
+    };
+    fetchAdmin();
+  }, []);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -35,16 +49,15 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!adminId) {
+    if (!admin?._id) {
       toast.error("Admin not available");
       return;
     }
 
     setLoading(true);
-
     try {
       await axiosInstance.post("/message/send", {
-        receiverId: adminId,
+        receiverId: admin._id,
         message: form.message,
         senderName: form.name,
         senderEmail: form.email,
@@ -61,7 +74,10 @@ const Contact = () => {
   };
 
   return (
-    <FormLayout title={<span className="text-purple fw-bold mb-4">Contact Us</span>} onSubmit={handleSubmit}>
+    <FormLayout
+      title={<span className="text-purple fw-bold mb-4">Contact Us</span>}
+      onSubmit={handleSubmit}
+    >
       <div className="mb-3">
         <label className="form-label text-light">Name</label>
         <input

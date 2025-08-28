@@ -56,10 +56,18 @@ const AdminLayout = () => {
     },
     {
       to: "/admin/attendee-messages",
-      icon: "bi-envelope-paper",
-      label: "Messages",
+      icon: "bi-chat-left-text",
+      label: "Attendee Messages",
     },
-    { to: "/admin/fetch-users", icon: "bi-people-fill", label: "Users Info" },
+    {
+      to: "/admin/exhibitor-messages",
+      icon: "bi-chat-dots",
+      label: "Exhibitor Messages",
+    },
+    { to: "/admin/fetch-users", 
+      icon: "bi-people-fill", 
+      label: "Attendee Info" 
+    },
     {
       to: "/admin/fetch-exhibitors",
       icon: "bi-building",

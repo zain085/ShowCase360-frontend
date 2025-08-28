@@ -30,7 +30,7 @@ const ExhibitorLayout = () => {
       label: "Expos",
     },
     { to: "/exhibitor/my-booth", icon: "bi-shop-window", label: "My Booth" },
-    { to: "/exhibitor/messages", icon: "bi-envelope-paper", label: "Messages" },
+    { to: "/exhibitor/messages", icon: "bi-chat-dots", label: "Messages" },
     {
       to: "/exhibitor/exhibitor-profile",
       icon: "bi-person-badge",
