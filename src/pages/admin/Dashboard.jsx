@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import axiosInstance from '../../api/axiosInstance';
+import CustomCard from '../../components/Card.jsx';
 
 const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem("user"));
