@@ -55,9 +55,17 @@ const ManageBooths = () => {
     }
   };
 
-  const boothsToRender = filter === "available" ? availableBooths : reservedBooths;
+  const boothsToRender =
+    filter === "available" ? availableBooths : reservedBooths;
 
-  const headers = ["Booth #", "Location", "Status", "Exhibitor", "Expo ID", "Actions"];
+  const headers = [
+    "Booth #",
+    "Location",
+    "Status",
+    "Exhibitor",
+    "Expo",
+    "Actions",
+  ];
 
   const renderRow = (booth) => (
     <>
@@ -74,12 +82,8 @@ const ManageBooths = () => {
       >
         {booth.status}
       </td>
-      <td>
-        {booth.exhibitorId
-          ? booth.exhibitorId.companyName || booth.exhibitorId._id || "Assigned"
-          : "N/A"}
-      </td>
-      <td>{booth.expoId}</td>
+      <td>{booth.exhibitorId?.companyName || "N/A"}</td>
+      <td>{booth.expoId?.title || "N/A"}</td>
       <td>
         <div className="d-flex justify-content-center gap-2">
           <button
@@ -136,7 +140,11 @@ const ManageBooths = () => {
         </div>
 
         {/* Table */}
-        <CustomTable headers={headers} rows={boothsToRender} renderRow={renderRow} />
+        <CustomTable
+          headers={headers}
+          rows={boothsToRender}
+          renderRow={renderRow}
+        />
       </div>
 
       {/* Confirm Modal */}

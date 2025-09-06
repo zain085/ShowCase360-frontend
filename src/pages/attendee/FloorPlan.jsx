@@ -33,9 +33,18 @@ const FloorPlan = () => {
     fetchBooths();
   }, []);
 
-  const customFloorOrder = ["First Floor", "Second Floor", "Third Floor", "Basement"];
-  const sortedFloors = customFloorOrder.filter(f => Object.keys(boothsByLocation).includes(f));
-  const remainingFloors = Object.keys(boothsByLocation).filter(f => !customFloorOrder.includes(f));
+  const customFloorOrder = [
+    "First Floor",
+    "Second Floor",
+    "Third Floor",
+    "Basement",
+  ];
+  const sortedFloors = customFloorOrder.filter((f) =>
+    Object.keys(boothsByLocation).includes(f)
+  );
+  const remainingFloors = Object.keys(boothsByLocation).filter(
+    (f) => !customFloorOrder.includes(f)
+  );
   const locations = ["All Floors", ...sortedFloors, ...remainingFloors];
 
   return (
@@ -60,7 +69,9 @@ const FloorPlan = () => {
 
       {locations
         .filter((loc) => loc !== "All Floors")
-        .filter((loc) => selectedLocation === "All Floors" || loc === selectedLocation)
+        .filter(
+          (loc) => selectedLocation === "All Floors" || loc === selectedLocation
+        )
         .map((location) => (
           <div className="mb-5" key={location}>
             <div className="card bg-dark-custom border-purple shadow">
@@ -71,8 +82,10 @@ const FloorPlan = () => {
                 </span>
               </div>
 
-              <div className="card-body" style={{ backgroundColor: '#242323ff' }}>
-
+              <div
+                className="card-body"
+                style={{ backgroundColor: "#242323ff" }}
+              >
                 <div className="row">
                   {boothsByLocation[location].map((booth) => (
                     <div className="col-md-4 mb-4" key={booth._id}>
@@ -89,20 +102,19 @@ const FloorPlan = () => {
                           )}
                         </p>
                         <p className="mb-1">
-                          <strong>Expo ID:</strong> {booth.expoId}
+                          <strong>Expo:</strong> {booth.expoId?.title || "N/A"}
                         </p>
                         <p className="mb-1">
-                          <strong>Type:</strong> Standard Booth
+                          <strong>Exhibitor:</strong>{" "}
+                          {booth.exhibitorId?.companyName || "N/A"}
                         </p>
-                        <p className="mb-4">
+                        <p className="mb-1">
+                          <strong>Location:</strong> {booth.location}
+                        </p>
+                        <p className="mb-1">
                           <strong>Created:</strong>{" "}
                           {new Date(booth.createdAt).toLocaleString()}
                         </p>
-                        <div className="mt-auto text-end">
-                          <span className="badge bg-purple">
-                            Booth ID: {booth._id}
-                          </span>
-                        </div>
                       </CustomCard>
                     </div>
                   ))}
