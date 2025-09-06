@@ -69,7 +69,7 @@ const Dashboard = () => {
         icon: "bi-door-closed", 
         title: "Total Booths",
         value: stats.totalBooths,
-        subtitle: "10 available",
+        subtitle: "some available",
       },
       {
         icon: "bi-chat-left-text", 

@@ -1,5 +1,6 @@
 import React, {
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
@@ -12,6 +13,38 @@ import { toast } from 'react-toastify';
 import axiosInstance from '../../api/axiosInstance';
 import ConfirmModal from '../../components/ConfirmModal'; // import your modal
 import CustomTable from '../../components/Table';
+
+// Tooltip helper
+const TooltipText = ({ title, placement = "top", children }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!ref.current || !window?.bootstrap?.Tooltip) return;
+
+    const old = window.bootstrap.Tooltip.getInstance(ref.current);
+    if (old) old.dispose();
+
+    const instance = new window.bootstrap.Tooltip(ref.current, {
+      title,
+      placement,
+      trigger: "hover",
+      container: "body",
+    });
+
+    return () => instance?.dispose();
+  }, [title, placement, children]);
+
+  return (
+    <span
+      ref={ref}
+      data-bs-toggle="tooltip"
+      data-bs-placement={placement}
+      title={title}
+    >
+      {children}
+    </span>
+  );
+};
 
 const ManageExpos = () => {
   const [expos, setExpos] = useState([]);
@@ -52,7 +85,15 @@ const ManageExpos = () => {
     }
   };
 
-  const headers = ["Title", "Description", "Theme", "Date", "Location", "Actions"];
+  const headers = [
+    "ID",
+    "Title",
+    "Description",
+    "Theme",
+    "Date",
+    "Location",
+    "Actions",
+  ];
 
   return (
     <div className="container py-4 text-white">
@@ -66,37 +107,61 @@ const ManageExpos = () => {
       <CustomTable
         headers={headers}
         rows={expos}
-        renderRow={(expo) => (
-          <>
-            <td>{expo.title}</td>
-            <td>
-              <div className="truncate-hover" title={expo.description}>
-                {expo.description}
-              </div>
-            </td>
-            <td>{expo.theme}</td>
-            <td>{new Date(expo.date).toLocaleDateString()}</td>
-            <td>{expo.location}</td>
-            <td>
-              <div className="d-flex justify-content-center gap-2">
-                <button
-                  className="btn btn-sm btn-outline-warning"
-                  title="Edit"
-                  onClick={() => navigate(`/admin/edit-expo/${expo._id}`)}
-                >
-                  <i className="bi bi-pencil-square"></i>
-                </button>
-                <button
-                  className="btn btn-sm btn-outline-danger"
-                  title="Delete"
-                  onClick={() => handleDeleteClick(expo._id)}
-                >
-                  <i className="bi bi-trash3-fill"></i>
-                </button>
-              </div>
-            </td>
-          </>
-        )}
+        renderRow={(expo) => {
+          const shortId =
+            expo._id && expo._id.length > 6
+              ? `...${expo._id.slice(-4)}`
+              : expo._id;
+
+          return (
+            <>
+              <td>
+                <TooltipText title={expo._id} placement="top">
+                  {shortId}
+                </TooltipText>
+                <i
+                  className="bi bi-clipboard ms-2 text-purple"
+                  style={{ cursor: "pointer" }}
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(expo._id);
+                      toast.info("Expo ID copied!");
+                    } catch {
+                      toast.error("Failed to copy ID");
+                    }
+                  }}
+                />
+              </td>
+              <td>{expo.title}</td>
+              <td>
+                <div className="truncate-hover" title={expo.description}>
+                  {expo.description}
+                </div>
+              </td>
+              <td>{expo.theme}</td>
+              <td>{new Date(expo.date).toLocaleDateString()}</td>
+              <td>{expo.location}</td>
+              <td>
+                <div className="d-flex justify-content-center gap-2">
+                  <button
+                    className="btn btn-sm btn-outline-warning"
+                    title="Edit"
+                    onClick={() => navigate(`/admin/edit-expo/${expo._id}`)}
+                  >
+                    <i className="bi bi-pencil-square"></i>
+                  </button>
+                  <button
+                    className="btn btn-sm btn-outline-danger"
+                    title="Delete"
+                    onClick={() => handleDeleteClick(expo._id)}
+                  >
+                    <i className="bi bi-trash3-fill"></i>
+                  </button>
+                </div>
+              </td>
+            </>
+          );
+        }}
       />
 
       {/* Confirmation Modal */}

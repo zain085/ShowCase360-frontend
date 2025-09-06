@@ -40,7 +40,7 @@ const CreateProfile = () => {
         if (res.data.success) {
           setProfileExists(true);
           if (!toastShown.current) {
-            toast.info('Profile already exists. Redirect to dashboard to edit.');
+            toast.info('Profile already exists.');
             toastShown.current = true;
           }
         }

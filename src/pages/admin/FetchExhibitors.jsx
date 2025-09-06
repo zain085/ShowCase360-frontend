@@ -168,7 +168,7 @@ const FetchExhibitors = () => {
 
   return (
     <div className="container mt-4">
-      <h3 className="text-white mb-3">Manage Exhibitors</h3>
+      <h2 className="text-white mb-4">Exhibitors Profiles</h2>
 
       {loading ? (
         <p className="text-center text-white">Loading exhibitors...</p>

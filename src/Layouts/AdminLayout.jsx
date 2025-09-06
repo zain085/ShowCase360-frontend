@@ -44,6 +44,16 @@ const AdminLayout = () => {
       icon: "bi-grid",
       label: "Booth Allocation",
     },
+    { 
+      to: "/admin/fetch-users", 
+      icon: "bi-people-fill", 
+      label: "Attendee Info" 
+    },
+    {
+      to: "/admin/fetch-exhibitors",
+      icon: "bi-building",
+      label: "Exhibitor Info",
+    },
     {
       to: "/admin/reports",
       icon: "bi-file-earmark-bar-graph",
@@ -52,7 +62,7 @@ const AdminLayout = () => {
     {
       to: "/admin/fetch-feedback",
       icon: "bi-chat-left-dots",
-      label: "Feedback",
+      label: "Feedbacks",
     },
     {
       to: "/admin/attendee-messages",
@@ -64,15 +74,7 @@ const AdminLayout = () => {
       icon: "bi-chat-dots",
       label: "Exhibitor Messages",
     },
-    { to: "/admin/fetch-users", 
-      icon: "bi-people-fill", 
-      label: "Attendee Info" 
-    },
-    {
-      to: "/admin/fetch-exhibitors",
-      icon: "bi-building",
-      label: "Exhibitors Info",
-    },
+    
   ];
 
   return (

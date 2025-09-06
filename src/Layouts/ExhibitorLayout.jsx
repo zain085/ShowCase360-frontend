@@ -23,19 +23,31 @@ const ExhibitorLayout = () => {
   };
 
   const navItems = [
-    { to: "/exhibitor/", icon: "bi-speedometer2", label: "Dashboard" },
-    {
-      to: "/exhibitor/expo-register",
-      icon: "bi-calendar-event",
-      label: "Expos",
+    { 
+      to: "/exhibitor/", 
+      icon: "bi-speedometer2", 
+      label: "Dashboard" 
     },
-    { to: "/exhibitor/my-booth", icon: "bi-shop-window", label: "My Booth" },
-    { to: "/exhibitor/messages", icon: "bi-chat-dots", label: "Messages" },
     {
       to: "/exhibitor/exhibitor-profile",
       icon: "bi-person-badge",
       label: "Profile",
     },
+    {
+      to: "/exhibitor/expo-register",
+      icon: "bi-calendar-event",
+      label: "Expos",
+    },
+    { 
+      to: "/exhibitor/my-booth", 
+      icon: "bi-shop-window", 
+      label: "My Booth" 
+    },
+    { 
+      to: "/exhibitor/messages", 
+      icon: "bi-chat-dots", 
+      label: "Admin Contact" },
+    
     {
       to: "/exhibitor/create-profile",
       icon: "bi-file-earmark-plus",

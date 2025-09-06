@@ -172,7 +172,7 @@ const FetchUsers = () => {
 
   return (
     <div className="container mt-4">
-      <h3 className="text-white mb-3">Manage Users</h3>
+      <h2 className="text-white mb-4">Attendee Profiles</h2>
 
       {loading ? (
         <p className="text-center text-white">Loading users...</p>

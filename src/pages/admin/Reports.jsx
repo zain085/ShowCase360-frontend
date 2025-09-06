@@ -79,7 +79,7 @@ const Reports = () => {
 
   return (
     <div className="container py-4">
-      <h3 className="text-light mb-4">Analytics & Reports</h3>
+      <h2 className="text-light mb-4">Analytics & Reports</h2>
 
       {/* Overview Cards */}
       <div className="row g-4 mb-4">
