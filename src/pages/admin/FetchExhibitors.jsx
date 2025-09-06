@@ -50,7 +50,6 @@ const FetchExhibitors = () => {
 
       if (res.data.success) {
         setExhibitors(res.data.data);
-        toast.success(res.data.message || "Exhibitors loaded successfully");
       } else {
         toast.error(res.data.message || "Failed to fetch exhibitors");
       }

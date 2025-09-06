@@ -6,10 +6,9 @@ import React, {
 
 import { toast } from 'react-toastify';
 
-import axiosInstance from '../../api/axiosInstance'; // adjust path if needed
-import ConfirmModal
-  from '../../components/ConfirmModal'; // adjust path if needed
-import CustomTable from '../../components/Table'; // adjust path if needed
+import axiosInstance from '../../api/axiosInstance';
+import ConfirmModal from '../../components/ConfirmModal';
+import CustomTable from '../../components/Table';
 
 // Small helper to reliably init/dispose Bootstrap tooltip per element
 const TooltipText = ({ title, placement = "top", children }) => {
@@ -60,7 +59,6 @@ const FetchUsers = () => {
 
       if (res.data.success) {
         setUsers(res.data.data);
-        toast.success(res.data.message || "Users loaded successfully");
       } else {
         toast.error(res.data.message || "Failed to fetch users");
       }
